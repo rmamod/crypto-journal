@@ -114,20 +114,6 @@ faire transiter le premier.
 
 ---
 
-## Quand ça ne marche plus
-
-| Message | Cause | Solution |
-|---|---|---|
-| « Token GitHub expiré ou révoqué » | expiration au bout d'un an | régénérer le token, le ressaisir dans les réglages |
-| « Repo ou chemin introuvable » | owner/repo/chemin erroné, **ou** token sans accès au repo privé | vérifier les trois champs, puis le périmètre du token |
-| « Le fichier a été modifié ailleurs » | deux onglets ou deux appareils ont écrit | **Recharger**, puis ressaisir la modification |
-| « Quota GitHub dépassé » | 5 000 requêtes/h dépassées | attendre quelques minutes |
-
-En cas d'erreur de sauvegarde, **la saisie n'est jamais perdue** : elle reste en mémoire et dans le
-cache local du navigateur.
-
----
-
 ## Format CSV
 
 En-tête : `date,asset,platform,totalPaidEur,feesEur,quantity,unitPriceEur,note`
