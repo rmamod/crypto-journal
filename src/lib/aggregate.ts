@@ -70,8 +70,8 @@ export function grandTotal(purchases: Purchase[]): GrandTotal {
 }
 
 /**
- * Valeurs distinctes déjà saisies, pour alimenter les propositions du formulaire :
- * la datalist des plateformes, et la liste déroulante des cryptos (voir `assetOptions`).
+ * Valeurs distinctes déjà saisies, pour alimenter les listes déroulantes du formulaire
+ * (voir `assetOptions` et `platformOptions`).
  */
 export function distinctValues(purchases: Purchase[], field: 'asset' | 'platform'): string[] {
   const seen = new Set<string>()

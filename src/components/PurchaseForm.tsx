@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import type { Purchase } from '../types'
 import { assetLabel, assetOptions } from '../lib/assets'
 import { parseNumber, todayIso } from '../lib/money'
+import { platformOptions } from '../lib/platforms'
 import { computeQuantity, computeUnitPrice, newId, validatePurchase } from '../lib/purchase'
 
 interface Props {
@@ -55,8 +56,9 @@ export function PurchaseForm({ editing, assets, platforms, onSubmit, onCancelEdi
   // En édition on ne recalcule rien tant que l'utilisateur n'a rien touché.
   const [auto, setAuto] = useState<AutoField>('quantity')
   const [submitted, setSubmitted] = useState(false)
-  // Cryptos déjà saisies en tête, complétées par les plus courantes.
+  // Valeurs déjà saisies en tête, complétées par les plus courantes.
   const assetChoices = useMemo(() => assetOptions(assets), [assets])
+  const platformChoices = useMemo(() => platformOptions(platforms), [platforms])
 
   useEffect(() => {
     setForm(editing ? fromPurchase(editing) : blank())
@@ -147,19 +149,14 @@ export function PurchaseForm({ editing, assets, platforms, onSubmit, onCancelEdi
         </Field>
 
         <Field label="Plateforme">
-          <input
-            list="platforms"
-            value={form.platform}
-            onChange={(e) => update({ platform: e.target.value })}
-            placeholder="Kraken"
-            className={inputClass}
-            autoComplete="off"
-          />
-          <datalist id="platforms">
-            {platforms.map((p) => (
-              <option key={p} value={p} />
+          <select value={form.platform} onChange={(e) => update({ platform: e.target.value })} className={inputClass}>
+            <option value="">— Choisir —</option>
+            {platformChoices.map((p) => (
+              <option key={p} value={p}>
+                {p}
+              </option>
             ))}
-          </datalist>
+          </select>
         </Field>
 
         <Field label="Montant total débité" hint="frais inclus">
