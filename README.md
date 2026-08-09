@@ -136,7 +136,7 @@ n'est interrogée, conformément à la règle 2 ci-dessus :
 | Champ | Liste | Fichier |
 |---|---|---|
 | Crypto | top 10 par capitalisation | `src/lib/assets.ts` |
-| Plateforme | top 10 par volume, plus Revolut X | `src/lib/platforms.ts` |
+| Plateforme | 10 plateformes utilisables en euros, plus Revolut X | `src/lib/platforms.ts` |
 
 Ces deux champs sont des **listes déroulantes, sans saisie libre**. Chacune contient sa liste de
 référence **plus toutes les valeurs déjà présentes dans le journal** — un achat en cours de
@@ -146,6 +146,9 @@ Corollaire à connaître : **pour saisir une crypto ou une plateforme absente de
 première fois**, il faut l'ajouter au fichier correspondant, ou la faire entrer par un import CSV
 (l'import, lui, accepte n'importe quelle valeur) — elle est ensuite proposée pour toujours.
 
-Les classements se rafraîchissent à la main. Celui des plateformes est mondial, pas français : si
-Bitpanda, Bitvavo ou Bitstamp te servent plus que MEXC ou Gate.io, c'est `src/lib/platforms.ts`
-qu'il faut modifier, et rien d'autre.
+Les deux listes se rafraîchissent à la main, et n'obéissent pas au même critère. Les cryptos suivent
+la capitalisation, qui ne dépend pas de la devise. Les plateformes, elles, sont retenues sur leur
+**utilité en euros** — virement SEPA, paires en EUR, service ouvert depuis l'Europe — et non sur leur
+volume mondial : les géants offshore où l'on n'entre qu'en stablecoin n'ont pas leur place dans un
+journal libellé en euros. Le jour où cette liste ne correspond plus à tes comptes, elle se modifie
+dans `src/lib/platforms.ts`, et nulle part ailleurs.

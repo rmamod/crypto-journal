@@ -5,22 +5,27 @@
  * la main**, aucune API interrogée — le projet s'interdit toute dépendance chargée à
  * l'exécution, c'est ce qui protège le token GitHub stocké dans le `localStorage`.
  *
- * Top 10 par volume au comptant, relevé en **août 2026**. Le classement mondial n'est
- * pas le classement français : si Bitpanda, Bitvavo ou Bitstamp te servent plus que
- * MEXC ou Gate.io, remplace-les ici, c'est le seul endroit à toucher.
+ * Le critère n'est PAS le volume mondial, c'est **l'utilité pour un journal en euros** :
+ * virement SEPA, paires en EUR, service ouvert depuis l'Europe. C'est ce qui écarte les
+ * plateformes offshore pourtant énormes en volume (MEXC, Gate.io, KuCoin) : y acheter
+ * en euros suppose de passer par un stablecoin, donc ce n'est pas le premier achat que
+ * ce journal enregistre. Classement indicatif, relevé en **août 2026**.
+ *
+ * Retirer une plateforme d'ici ne perd rien : `platformOptions` propose toujours celles
+ * déjà présentes dans le journal.
  */
 export const POPULAR_PLATFORMS: readonly string[] = [
   'Binance',
   'Coinbase',
   'Kraken',
-  'Bybit',
-  'OKX',
-  'Bitget',
-  'KuCoin',
+  'Bitvavo',
+  'Bitpanda',
+  'Bitstamp',
   'Crypto.com',
-  'Gate.io',
-  'MEXC',
-  // Hors top 10, ajouté explicitement : Revolut X sert de porte d'entrée à beaucoup
+  'Coinhouse',
+  'OKX',
+  'Bybit',
+  // Hors classement, ajouté explicitement : Revolut X sert de porte d'entrée à beaucoup
   // de comptes européens déjà ouverts chez Revolut.
   'Revolut X',
 ]
