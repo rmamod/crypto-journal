@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Purchase } from '../types'
+import { assetLabel, assetOptions } from '../lib/assets'
 import { parseNumber, todayIso } from '../lib/money'
 import { computeQuantity, computeUnitPrice, newId, validatePurchase } from '../lib/purchase'
 
@@ -54,6 +55,8 @@ export function PurchaseForm({ editing, assets, platforms, onSubmit, onCancelEdi
   // En édition on ne recalcule rien tant que l'utilisateur n'a rien touché.
   const [auto, setAuto] = useState<AutoField>('quantity')
   const [submitted, setSubmitted] = useState(false)
+  // Cryptos déjà saisies en tête, complétées par les plus courantes.
+  const assetChoices = useMemo(() => assetOptions(assets), [assets])
 
   useEffect(() => {
     setForm(editing ? fromPurchase(editing) : blank())
@@ -133,19 +136,14 @@ export function PurchaseForm({ editing, assets, platforms, onSubmit, onCancelEdi
         </Field>
 
         <Field label="Crypto">
-          <input
-            list="assets"
-            value={form.asset}
-            onChange={(e) => update({ asset: e.target.value })}
-            placeholder="BTC"
-            className={`${inputClass} uppercase`}
-            autoComplete="off"
-          />
-          <datalist id="assets">
-            {assets.map((a) => (
-              <option key={a} value={a} />
+          <select value={form.asset} onChange={(e) => update({ asset: e.target.value })} className={inputClass}>
+            <option value="">— Choisir —</option>
+            {assetChoices.map((a) => (
+              <option key={a.ticker} value={a.ticker}>
+                {assetLabel(a)}
+              </option>
             ))}
-          </datalist>
+          </select>
         </Field>
 
         <Field label="Plateforme">

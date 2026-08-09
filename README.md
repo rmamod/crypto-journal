@@ -129,3 +129,13 @@ En-tête : `date,asset,platform,totalPaidEur,feesEur,quantity,unitPriceEur,note`
 
 Pas de cours en direct ni de plus-value latente, pas de graphiques, pas de suivi des ventes ni de
 calcul fiscal. Le format de données reste extensible si ces besoins apparaissent.
+
+Dans la même logique, les cryptos proposées dans le formulaire (top 10 par capitalisation) sont
+**écrites en dur** dans `src/lib/assets.ts` — aucune API n'est interrogée, conformément à la règle 2
+ci-dessus. La liste se rafraîchit à la main quand le classement a bougé.
+
+Le champ « Crypto » est une **liste déroulante**, sans saisie libre. Elle contient le top 10 plus
+toutes les cryptos déjà présentes dans le journal — un achat en cours de modification y retrouve donc
+toujours la sienne. Corollaire à connaître : **pour saisir une crypto hors du top 10 pour la première
+fois**, il faut l'ajouter à `src/lib/assets.ts`, ou la faire entrer par un import CSV (l'import, lui,
+accepte n'importe quel ticker) — elle est ensuite proposée pour toujours.
