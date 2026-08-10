@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Purchase } from '../types'
 import { formatDate, formatEur, formatQty, formatUnitPrice } from '../lib/money'
 import { distinctValues } from '../lib/aggregate'
+import { AssetBadge } from './AssetBadge'
 
 interface Props {
   purchases: Purchase[]
@@ -80,7 +81,9 @@ export function PurchaseTable({ purchases, onEdit, onDelete, children }: Props) 
               {rows.map((p) => (
                 <tr key={p.id} className="border-b border-slate-100 last:border-0 dark:border-slate-800">
                   <td className="whitespace-nowrap px-4 py-2 tabular-nums">{formatDate(p.date)}</td>
-                  <td className="px-4 py-2 font-semibold">{p.asset}</td>
+                  <td className="px-4 py-2">
+                    <AssetBadge asset={p.asset} />
+                  </td>
                   <td className="px-4 py-2 text-slate-600 dark:text-slate-400">
                     {p.platform}
                     {p.note && <span className="ml-2 text-xs text-slate-400">— {p.note}</span>}

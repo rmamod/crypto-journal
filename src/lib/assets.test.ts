@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { POPULAR_ASSETS, assetLabel, assetOptions } from './assets'
+import { POPULAR_ASSETS, assetLabel, assetOptions, assetTone } from './assets'
 
 describe('POPULAR_ASSETS', () => {
   it('propose dix cryptos, sans doublon de ticker', () => {
@@ -58,5 +58,34 @@ describe('assetLabel', () => {
 
   it('affiche le ticker seul quand le nom est inconnu', () => {
     expect(assetLabel({ ticker: 'PEPE' })).toBe('PEPE')
+  })
+})
+
+describe('assetTone', () => {
+  // Toute l'utilité de la pastille : reconnaître une crypto à sa couleur.
+  it('donne toujours la même teinte à la même crypto', () => {
+    expect(assetTone('BTC')).toBe(assetTone('BTC'))
+    expect(assetTone('btc')).toBe(assetTone(' BTC '))
+  })
+
+  it('épingle les cryptos dont la couleur est identifiable', () => {
+    expect(assetTone('BTC')).toContain('amber')
+    expect(assetTone('ETH')).toContain('indigo')
+    expect(assetTone('USDT')).toContain('emerald')
+    expect(assetTone('SOL')).toContain('violet')
+  })
+
+  // Le rouge et le rose disent « erreur » et « suppression » ailleurs dans l'app.
+  it('n’utilise jamais le rouge ni le rose', () => {
+    const seen = [...POPULAR_ASSETS.map((a) => a.ticker), 'PEPE', 'WIF', 'LINK', 'AVAX', '']
+    for (const ticker of seen) {
+      expect(assetTone(ticker)).not.toMatch(/red|rose|pink/)
+    }
+  })
+
+  it('donne une teinte à n’importe quel ticker, même inconnu', () => {
+    for (const ticker of ['PEPE', 'WIF', 'LINK', '']) {
+      expect(assetTone(ticker)).toMatch(/^bg-\w+-100 /)
+    }
   })
 })

@@ -1,6 +1,7 @@
 import type { Purchase } from '../types'
 import { grandTotal, summarize } from '../lib/aggregate'
 import { formatEur, formatQty, formatUnitPrice } from '../lib/money'
+import { AssetBadge } from './AssetBadge'
 
 export function SummaryTable({ purchases }: { purchases: Purchase[] }) {
   const summaries = summarize(purchases)
@@ -33,7 +34,9 @@ export function SummaryTable({ purchases }: { purchases: Purchase[] }) {
           <tbody>
             {summaries.map((s) => (
               <tr key={s.asset} className="border-b border-slate-100 last:border-0 dark:border-slate-800">
-                <td className="px-4 py-2 font-semibold text-slate-900 dark:text-slate-100">{s.asset}</td>
+                <td className="px-4 py-2">
+                  <AssetBadge asset={s.asset} />
+                </td>
                 <td className="px-4 py-2 text-right font-mono">{formatQty(s.quantity)}</td>
                 <td className="px-4 py-2 text-right font-mono">{formatEur(s.totalPaidEur)}</td>
                 <td className="px-4 py-2 text-right font-mono text-slate-500 dark:text-slate-400">{formatEur(s.feesEur)}</td>
