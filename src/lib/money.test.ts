@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatEur, parseNumber, roundEur, roundQty, roundTo } from './money'
+import { dateSuffix, formatEur, parseNumber, roundEur, roundQty, roundTo } from './money'
 
 describe('parseNumber', () => {
   it('accepte les formats français et anglais', () => {
@@ -51,5 +51,16 @@ describe('formatEur', () => {
     expect(formatEur(1234.5)).toContain('1')
     expect(formatEur(1234.5)).toContain('234,50')
     expect(formatEur(1234.5)).toContain('€')
+  })
+})
+
+describe('dateSuffix', () => {
+  it('complète une phrase avec la date', () => {
+    expect(dateSuffix('2026-08-09')).toBe('du 09/08/2026')
+  })
+
+  // Sans ça, les messages de commit finissaient par « du » suivi de rien.
+  it('dit « sans date » quand la date manque', () => {
+    expect(dateSuffix('')).toBe('sans date')
   })
 })

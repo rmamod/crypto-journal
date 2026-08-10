@@ -47,7 +47,9 @@ export function validatePurchase(p: Purchase): ValidationResult {
   const errors: string[] = []
   const warnings: string[] = []
 
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(p.date)) errors.push('Date invalide.')
+  // La date peut rester vide — on ne retrouve pas toujours celle d'un vieil achat.
+  // Renseignée, en revanche, elle doit être lisible.
+  if (p.date !== '' && !/^\d{4}-\d{2}-\d{2}$/.test(p.date)) errors.push('Date invalide.')
   if (!p.asset.trim()) errors.push('La crypto est obligatoire.')
   if (!p.platform.trim()) errors.push('La plateforme est obligatoire.')
 

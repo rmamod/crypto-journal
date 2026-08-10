@@ -70,6 +70,24 @@ export function grandTotal(purchases: Purchase[]): GrandTotal {
 }
 
 /**
+ * Ordre d'affichage du journal : du plus récent au plus ancien, la crypto départageant
+ * deux achats du même jour.
+ *
+ * Les achats sans date vont à la fin, quoi qu'il arrive : ils n'ont pas de place dans
+ * une chronologie, mais les cacher serait pire — ce sont ceux qu'on veut retrouver pour
+ * les compléter.
+ */
+export function sortForJournal(purchases: Purchase[]): Purchase[] {
+  return purchases.slice().sort((a, b) => {
+    const aUndated = a.date === ''
+    const bUndated = b.date === ''
+    if (aUndated !== bUndated) return aUndated ? 1 : -1
+    if (a.date !== b.date) return b.date.localeCompare(a.date)
+    return a.asset.localeCompare(b.asset)
+  })
+}
+
+/**
  * Valeurs distinctes déjà saisies, pour alimenter les listes déroulantes du formulaire
  * (voir `assetOptions` et `platformOptions`).
  */

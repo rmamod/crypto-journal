@@ -149,9 +149,13 @@ export function parseCsv(text: string): CsvImportResult {
     const line = r + 1
     const cell = (i: number) => (i >= 0 && i < row.length ? row[i].trim() : '')
 
-    const date = normalizeDate(cell(iDate))
-    if (!date) {
-      rejected.push({ line, reason: `Date illisible : « ${cell(iDate)} ».` })
+    // Une case date vide est acceptée : l'app autorise un achat sans date, donc un
+    // export doit pouvoir se réimporter tel quel. Une date écrite mais illisible
+    // reste une erreur, elle.
+    const rawDate = cell(iDate)
+    const date = rawDate === '' ? '' : normalizeDate(rawDate)
+    if (date === null) {
+      rejected.push({ line, reason: `Date illisible : « ${rawDate} ».` })
       continue
     }
 

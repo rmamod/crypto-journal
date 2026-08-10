@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { GitHubConfig, Purchase, SyncStatus } from './types'
 import { distinctValues } from './lib/aggregate'
-import { formatDate } from './lib/money'
+import { dateSuffix } from './lib/money'
 import { createGitHubAdapter } from './lib/storage/githubAdapter'
 import { readCache, readConfig, writeCache, writeConfig } from './lib/storage/localAdapter'
 import { SyncError, type StorageAdapter } from './lib/storage/types'
@@ -85,7 +85,7 @@ export default function App() {
     const exists = purchases.some((p) => p.id === purchase.id)
     const next = exists ? purchases.map((p) => (p.id === purchase.id ? purchase : p)) : [...purchases, purchase]
     const verb = exists ? 'modification' : 'ajout'
-    void persist(next, `data: ${verb} ${purchase.asset} du ${formatDate(purchase.date)}`)
+    void persist(next, `data: ${verb} ${purchase.asset} ${dateSuffix(purchase.date)}`)
     setEditing(null)
   }
 
@@ -93,7 +93,7 @@ export default function App() {
     const removed = purchases.find((p) => p.id === id)
     void persist(
       purchases.filter((p) => p.id !== id),
-      `data: suppression ${removed?.asset ?? ''} du ${removed ? formatDate(removed.date) : ''}`.trim(),
+      `data: suppression ${removed?.asset ?? ''} ${removed ? dateSuffix(removed.date) : ''}`.trim(),
     )
     if (editing?.id === id) setEditing(null)
   }

@@ -121,7 +121,18 @@ En-tête : `date,asset,platform,totalPaidEur,feesEur,quantity,unitPriceEur,note`
 - **Export** : virgule comme séparateur, point décimal, BOM UTF-8 (pour qu'Excel FR affiche les accents).
 - **Import** : accepte aussi le point-virgule, la virgule décimale et les dates `JJ/MM/AAAA`
   (ce que recrache Excel FR). Le cours peut être omis, il est alors recalculé.
+  La case date peut être vide (voir ci-dessous) ; une date écrite mais illisible reste rejetée.
   Les lignes invalides sont listées et ignorées, elles ne font pas échouer le fichier.
+
+### La date est facultative
+
+Un achat peut être enregistré sans date — celle d'un vieil achat ne se retrouve pas toujours.
+Le journal affiche alors **« Non défini »** et **place la ligne en fin de tableau** : elle n'a pas
+sa place dans une chronologie, mais la cacher serait pire, c'est justement celle qu'on veut
+retrouver pour la compléter.
+
+Tout le reste demeure obligatoire : sans crypto, sans plateforme ou sans montant, la ligne ne veut
+rien dire et la saisie est refusée.
 
 ---
 

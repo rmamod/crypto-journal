@@ -81,3 +81,16 @@ describe('validatePurchase', () => {
     expect(errors.length).toBeGreaterThanOrEqual(3)
   })
 })
+
+describe('validatePurchase — date facultative', () => {
+  it('accepte un achat sans date', () => {
+    const { errors } = validatePurchase({ ...base, date: '' })
+    expect(errors).toEqual([])
+  })
+
+  it('refuse toujours une date écrite mais illisible', () => {
+    for (const date of ['08/08/2026', '2026-8-8', 'hier']) {
+      expect(validatePurchase({ ...base, date }).errors).toContain('Date invalide.')
+    }
+  })
+})

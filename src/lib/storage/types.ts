@@ -49,7 +49,10 @@ export function parsePurchasesFile(raw: unknown): PurchasesFile {
     const p = item as Record<string, unknown>
     const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
     const str = (v: unknown) => (typeof v === 'string' ? v : '')
-    if (!str(p.date) || !str(p.asset)) return []
+    // Seule la crypto est indispensable pour qu'une ligne veuille dire quelque chose.
+    // La date, elle, peut manquer : la refuser ici ferait disparaître sans un mot un
+    // achat non daté à chaque rechargement, alors qu'il a bien été enregistré.
+    if (!str(p.asset)) return []
     return [
       {
         id: str(p.id) || crypto.randomUUID(),

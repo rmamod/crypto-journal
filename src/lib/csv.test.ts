@@ -127,3 +127,32 @@ describe('base64 UTF-8', () => {
     expect(base64ToUtf8(utf8ToBase64(big))).toBe(big)
   })
 })
+
+describe('CSV — achats sans date', () => {
+  it('accepte une case date vide', () => {
+    const { purchases: parsed, rejected } = parseCsv(
+      'date,asset,platform,totalPaidEur,feesEur,quantity,unitPriceEur,note\n' +
+        ',BTC,Kraken,500,2.5,0.008,61550.12,\n',
+    )
+    expect(rejected).toEqual([])
+    expect(parsed[0].date).toBe('')
+  })
+
+  it('refuse toujours une date écrite mais illisible', () => {
+    const { purchases: parsed, rejected } = parseCsv(
+      'date,asset,platform,totalPaidEur,feesEur,quantity,unitPriceEur,note\n' +
+        'hier,BTC,Kraken,500,2.5,0.008,61550.12,\n',
+    )
+    expect(parsed).toEqual([])
+    expect(rejected[0].reason).toContain('Date illisible')
+  })
+
+  // Un export doit pouvoir se réimporter tel quel, sinon l'aller-retour perd la ligne.
+  it('fait l’aller-retour sur un achat non daté', () => {
+    const undated: Purchase = { ...purchases[0], id: 'c', date: '' }
+    const { purchases: parsed, rejected } = parseCsv(toCsv([undated]))
+    expect(rejected).toEqual([])
+    expect(parsed[0].date).toBe('')
+    expect(parsed[0].asset).toBe('BTC')
+  })
+})

@@ -133,8 +133,8 @@ export function PurchaseForm({ editing, assets, platforms, onSubmit, onCancelEdi
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Field label="Date">
-          <input type="date" value={form.date} onChange={(e) => update({ date: e.target.value })} className={inputClass} required />
+        <Field label="Date" hint="facultatif">
+          <input type="date" value={form.date} onChange={(e) => update({ date: e.target.value })} className={inputClass} />
         </Field>
 
         <Field label="Crypto">

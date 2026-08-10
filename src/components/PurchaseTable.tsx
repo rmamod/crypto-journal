@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { Purchase } from '../types'
-import { formatDate, formatEur, formatQty, formatUnitPrice } from '../lib/money'
-import { distinctValues } from '../lib/aggregate'
+import { UNSET_DATE, dateSuffix, formatDate, formatEur, formatQty, formatUnitPrice } from '../lib/money'
+import { distinctValues, sortForJournal } from '../lib/aggregate'
 import { AssetBadge } from './AssetBadge'
 
 interface Props {
@@ -20,11 +20,10 @@ export function PurchaseTable({ purchases, onEdit, onDelete, children }: Props) 
   const platforms = distinctValues(purchases, 'platform')
 
   const rows = useMemo(() => {
-    return purchases
+    const filtered = purchases
       .filter((p) => (asset ? p.asset.toUpperCase() === asset.toUpperCase() : true))
       .filter((p) => (platform ? p.platform === platform : true))
-      .slice()
-      .sort((a, b) => (a.date === b.date ? a.asset.localeCompare(b.asset) : b.date.localeCompare(a.date)))
+    return sortForJournal(filtered)
   }, [purchases, asset, platform])
 
   return (
@@ -80,7 +79,13 @@ export function PurchaseTable({ purchases, onEdit, onDelete, children }: Props) 
             <tbody>
               {rows.map((p) => (
                 <tr key={p.id} className="border-b border-slate-100 last:border-0 dark:border-slate-800">
-                  <td className="whitespace-nowrap px-4 py-2 tabular-nums">{formatDate(p.date)}</td>
+                  <td className="whitespace-nowrap px-4 py-2 tabular-nums">
+                    {p.date ? (
+                      formatDate(p.date)
+                    ) : (
+                      <span className="italic text-slate-400 dark:text-slate-500">{UNSET_DATE}</span>
+                    )}
+                  </td>
                   <td className="px-4 py-2">
                     <AssetBadge asset={p.asset} />
                   </td>
@@ -119,11 +124,11 @@ export function PurchaseTable({ purchases, onEdit, onDelete, children }: Props) 
                       </div>
                     ) : (
                       <div className="flex items-center justify-end gap-1">
-                        <IconButton label={`Modifier l'achat ${p.asset} du ${formatDate(p.date)}`} onClick={() => onEdit(p)}>
+                        <IconButton label={`Modifier l'achat ${p.asset} ${dateSuffix(p.date)}`} onClick={() => onEdit(p)}>
                           <PencilIcon />
                         </IconButton>
                         <IconButton
-                          label={`Supprimer l'achat ${p.asset} du ${formatDate(p.date)}`}
+                          label={`Supprimer l'achat ${p.asset} ${dateSuffix(p.date)}`}
                           onClick={() => setConfirming(p.id)}
                           danger
                         >

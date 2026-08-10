@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Purchase } from '../types'
-import { distinctValues, grandTotal, summarize } from './aggregate'
+import { distinctValues, grandTotal, sortForJournal, summarize } from './aggregate'
 
 function purchase(over: Partial<Purchase>): Purchase {
   return {
@@ -95,5 +95,42 @@ describe('distinctValues', () => {
       purchase({ platform: '  ' }),
     ]
     expect(distinctValues(purchases, 'platform')).toEqual(['Binance', 'Kraken'])
+  })
+})
+
+describe('sortForJournal', () => {
+  it('trie du plus récent au plus ancien', () => {
+    const sorted = sortForJournal([
+      purchase({ id: '1', date: '2026-07-01' }),
+      purchase({ id: '2', date: '2026-08-09' }),
+      purchase({ id: '3', date: '2026-08-01' }),
+    ])
+    expect(sorted.map((p) => p.date)).toEqual(['2026-08-09', '2026-08-01', '2026-07-01'])
+  })
+
+  // Ce que demande l'affichage : une date manquante ne remonte pas en tête du journal.
+  it('rejette les achats sans date à la fin', () => {
+    const sorted = sortForJournal([
+      purchase({ id: '1', date: '' }),
+      purchase({ id: '2', date: '2026-08-09' }),
+      purchase({ id: '3', date: '' }),
+      purchase({ id: '4', date: '2020-01-01' }),
+    ])
+    expect(sorted.map((p) => p.date)).toEqual(['2026-08-09', '2020-01-01', '', ''])
+  })
+
+  it('départage deux achats du même jour par la crypto', () => {
+    const sorted = sortForJournal([
+      purchase({ id: '1', date: '2026-08-09', asset: 'SOL' }),
+      purchase({ id: '2', date: '2026-08-09', asset: 'BTC' }),
+    ])
+    expect(sorted.map((p) => p.asset)).toEqual(['BTC', 'SOL'])
+  })
+
+  it('ne modifie pas le tableau reçu', () => {
+    const input = [purchase({ date: '2020-01-01' }), purchase({ date: '2026-08-09' })]
+    const before = input.map((p) => p.date)
+    sortForJournal(input)
+    expect(input.map((p) => p.date)).toEqual(before)
   })
 })

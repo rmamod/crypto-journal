@@ -84,6 +84,18 @@ export function formatDate(iso: string): string {
   return y && m && d ? `${d}/${m}/${y}` : iso
 }
 
+/** Ce qu'affiche le journal à la place d'une date qu'on n'a pas renseignée. */
+export const UNSET_DATE = 'Non défini'
+
+/**
+ * Complément de date dans une phrase : « du 09/08/2026 », ou « sans date ».
+ * Sert aux messages de commit et aux libellés d'accessibilité, qui se terminaient
+ * sinon par un « du » suivi de rien.
+ */
+export function dateSuffix(iso: string): string {
+  return iso ? `du ${formatDate(iso)}` : 'sans date'
+}
+
 export function todayIso(): string {
   const now = new Date()
   const pad = (n: number) => String(n).padStart(2, '0')
