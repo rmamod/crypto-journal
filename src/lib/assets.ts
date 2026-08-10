@@ -102,7 +102,9 @@ const PINNED_TONES: Record<string, number> = {
   BTC: 0, // ambre
   ETH: 6, // indigo
   USDT: 2, // émeraude
-  SOL: 7, // violet
+  // Cyan et non violet : `violet-800` et l'`indigo-800` d'ETH sont deux voisins de la
+  // même famille, indiscernables côte à côte dans le tableau.
+  SOL: 4, // cyan
 }
 
 /**

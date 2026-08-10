@@ -72,7 +72,7 @@ describe('assetTone', () => {
     expect(assetTone('BTC')).toContain('amber')
     expect(assetTone('ETH')).toContain('indigo')
     expect(assetTone('USDT')).toContain('emerald')
-    expect(assetTone('SOL')).toContain('violet')
+    expect(assetTone('SOL')).toContain('cyan')
   })
 
   // Le rouge et le rose disent « erreur » et « suppression » ailleurs dans l'app.
