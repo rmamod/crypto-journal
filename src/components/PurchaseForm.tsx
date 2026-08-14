@@ -230,7 +230,7 @@ export function PurchaseForm({ editing, assets, platforms, onSubmit, onCancelEdi
       <div className="mt-4">
         <button
           type="submit"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           {editing ? 'Enregistrer' : 'Ajouter cet achat'}
         </button>

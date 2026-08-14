@@ -1,8 +1,13 @@
 @import 'tailwindcss';
 
-/* Champs numériques : on veut lire les montants alignés, pas des chiffres qui dansent. */
 @theme {
+  /* Champs numériques : on veut lire les montants alignés, pas des chiffres qui dansent. */
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+
+  /* Violet de l'action principale du formulaire. Nommé plutôt qu'écrit en dur dans
+     la classe : la teinte se retrouve ici, pas au milieu d'un `className`. */
+  --color-accent: rgb(104 76 246);
+  --color-accent-hover: rgb(92 67 216);
 }
 
 html {
