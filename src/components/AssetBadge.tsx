@@ -1,15 +1,17 @@
-import { assetTone } from '../lib/assets'
+import { AssetLogo } from './AssetLogo'
 
 /**
- * Le ticker sur une pastille arrondie, teintée d'après la crypto.
+ * Le logo de la crypto, suivi de son ticker.
  *
- * La taille de police ne change pas : c'est le fond coloré qui porte la mise en
- * valeur, pas un grossissement. Le padding vertical reste minimal pour ne pas
- * gonfler la hauteur des lignes du tableau.
+ * Le fond coloré a laissé la place au logo : c'est lui, désormais, qui se reconnaît
+ * d'un coup d'œil dans le tableau. Le ticker reste écrit à côté — un logo seul se
+ * devine pour BTC, jamais pour les cryptos qu'on possède sans les connaître par cœur,
+ * et c'est le ticker que reprennent le CSV et les filtres.
  */
 export function AssetBadge({ asset }: { asset: string }) {
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 font-semibold ${assetTone(asset)}`}>
+    <span className="inline-flex items-center gap-2 font-semibold text-slate-900 dark:text-slate-100">
+      <AssetLogo asset={asset} />
       {asset}
     </span>
   )

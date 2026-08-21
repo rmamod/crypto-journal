@@ -62,17 +62,11 @@ describe('assetLabel', () => {
 })
 
 describe('assetTone', () => {
-  // Toute l'utilité de la pastille : reconnaître une crypto à sa couleur.
+  // Toute l'utilité de la pastille : reconnaître à sa couleur une crypto qui n'a pas
+  // de logo dessiné.
   it('donne toujours la même teinte à la même crypto', () => {
-    expect(assetTone('BTC')).toBe(assetTone('BTC'))
-    expect(assetTone('btc')).toBe(assetTone(' BTC '))
-  })
-
-  it('épingle les cryptos dont la couleur est identifiable', () => {
-    expect(assetTone('BTC')).toContain('amber')
-    expect(assetTone('ETH')).toContain('indigo')
-    expect(assetTone('USDT')).toContain('emerald')
-    expect(assetTone('SOL')).toContain('cyan')
+    expect(assetTone('PEPE')).toBe(assetTone('PEPE'))
+    expect(assetTone('pepe')).toBe(assetTone(' PEPE '))
   })
 
   // Le rouge et le rose disent « erreur » et « suppression » ailleurs dans l'app.

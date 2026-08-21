@@ -73,7 +73,11 @@ export function assetLabel(option: AssetOption): string {
 }
 
 /**
- * Teintes des pastilles de ticker (voir `AssetBadge`).
+ * Teintes des pastilles d'initiale (voir `AssetLogo`).
+ *
+ * Ne concernent plus que les cryptos **sans logo dessiné** — celles qui arrivent par
+ * un import CSV. Les cryptos connues sont identifiées par leur logo, pas par une
+ * couleur tirée au sort.
  *
  * Ni rouge ni rose : ces deux couleurs signalent déjà l'erreur et la suppression
  * dans cette app, une crypto qui tomberait dessus se lirait comme un problème.
@@ -94,28 +98,15 @@ const ASSET_TONES: readonly string[] = [
 ]
 
 /**
- * Les quelques cryptos dont la couleur est trop identifiable pour être tirée au sort.
- * Tout le reste passe par le hachage ci-dessous, y compris ce qui arrive d'un CSV :
- * une table exhaustive serait à maintenir, le hachage ne l'est jamais.
- */
-const PINNED_TONES: Record<string, number> = {
-  BTC: 0, // ambre
-  ETH: 6, // indigo
-  USDT: 2, // émeraude
-  // Cyan et non violet : `violet-800` et l'`indigo-800` d'ETH sont deux voisins de la
-  // même famille, indiscernables côte à côte dans le tableau.
-  SOL: 4, // cyan
-}
-
-/**
  * Teinte d'un ticker. Déterministe : la même crypto garde sa couleur d'une ligne à
  * l'autre et d'une session à l'autre — c'est toute l'utilité de la pastille.
  * Les collisions sont assumées, il y a bien plus de tickers que de teintes.
+ *
+ * Le hachage traite n'importe quel ticker, y compris ceux qui arrivent d'un CSV : une
+ * table exhaustive serait à maintenir, le hachage ne l'est jamais.
  */
 export function assetTone(asset: string): string {
   const key = asset.trim().toUpperCase()
-  const pinned = PINNED_TONES[key]
-  if (pinned !== undefined) return ASSET_TONES[pinned]
 
   let hash = 0
   for (const char of key) hash = (hash * 31 + (char.codePointAt(0) ?? 0)) % ASSET_TONES.length

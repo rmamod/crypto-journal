@@ -149,6 +149,10 @@ n'est interrogée, conformément à la règle 2 ci-dessus :
 | Crypto | top 10 par capitalisation | `src/lib/assets.ts` |
 | Plateforme | 10 plateformes utilisables en euros, plus Revolut X | `src/lib/platforms.ts` |
 
+Même logique pour les **logos des cryptos** : ils sont dessinés en SVG dans
+`src/components/AssetLogo.tsx`, jamais chargés depuis un CDN de logos. Une crypto sans logo dessiné —
+tout ce qui arrive par un import CSV — s'affiche avec son initiale sur une pastille colorée.
+
 Ces deux champs sont des **listes déroulantes, sans saisie libre**. Chacune contient sa liste de
 référence **plus toutes les valeurs déjà présentes dans le journal** — un achat en cours de
 modification y retrouve donc toujours la sienne.
